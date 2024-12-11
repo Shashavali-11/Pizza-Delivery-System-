@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizza Delevary</title>
+
+    <style>
+      /* General Styles */
+      body {
+        font-family: Arial, sans-serif;
+        /* background-color: #f8f9fa; */
+        background-color: lightgray;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Button Styles */
+      #btn {
+        background-color: #ff5722;
+        color: white;
+        font-size: 18px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 20px auto;
+        display: block;
+        transition: background-color 0.3s ease;
+      }
+
+      #btn:hover {
+        background-color: #e64a19;
+      }
+
+      /* Parent Container */
+      #parent {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      /* Child Div Styles */
+      #parent > div {
+        background-color: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        width: 200px;
+        height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+      }
+
+      #parent > div:hover {
+        transform: scale(1.05);
+      }
+
+      /* Image Styles */
+      #parent img {
+        height: 100px;
+        width: 100px;
+        margin-bottom: 10px;
+      }
+
+      /* Text Styles */
+      #parent p {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">Start</button>
+    <center>
+      <div id="parent"></div>
+    </center>
+  
+
+    <script>
+      let button = document.getElementById("btn");
+      let parent = document.getElementById("parent");
+
+      button.addEventListener("click", () => {
+        button.style.display = "none";
+        pizzaWorkflow();
+      });
+
+      // Function to create an arrow element
+      function createArrow() {
+        let arrow = document.createElement("pre");
+        arrow.innerHTML = "&#8594;"; // Unicode arrow symbol
+        arrow.style.fontSize = "30px";
+        arrow.style.color = "#333";
+        arrow.style.margin = "2px";
+        arrow.style.textAlign = "center";
+        return arrow;
+      }
+
+      // Function to create a pizza step
+      function createStep(imageSrc, text, backgroundColor) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            let d = document.createElement("div");
+            d.style.border = "2px solid";
+            d.style.backgroundColor = backgroundColor;
+            d.style.height = "200px";
+            d.style.width = "200px";
+
+            // Add Image
+            let img = document.createElement("img");
+            img.src = imageSrc;
+            img.style.height = "100px";
+            img.style.width = "100px";
+            img.style.padding = "20px";
+            d.appendChild(img);
+
+            // Add text
+            let p = document.createElement("p");
+            p.innerText = text;
+            d.appendChild(p);
+
+            parent.appendChild(d);
+            parent.appendChild(createArrow());
+            resolve();
+          }, 1000);
+        });
+      }
+
+      // Async function for pizza workflow
+      async function pizzaWorkflow() {
+        await createStep("order.jpg", "Order Placed", "#fce4ec"); // Light pink
+        await createStep("prepare.jpeg", "Prepare Pizza", "#e3f2fd"); // Light blue
+        await createStep("bake.jpg", "Bake Pizza", "#e8f5e9"); // Light green
+        await createStep("pack.webp", "Pack Pizza", "#fff8e1"); // Light yellow
+        await createStep("deliver.jpeg", "Deliver Pizza", "#ede7f6"); // Light purple
+
+        // Remove the last arrow
+        parent.lastChild.remove();
+      }
+    </script>
+  </body>
+</html>
